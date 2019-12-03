@@ -1,34 +1,72 @@
 <template>
-<body class="bg-grey-lighter h-screen font-sans">
-    <div class="container mx-auto h-full flex justify-center items-center pb-64">
-        <div class="w-1/3">
-            <h1 class="font-hairline mb-6 text-center">Login to our Website</h1>
-            <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
-                <div class="mb-4">
-                    <label class="font-bold text-grey-darker block mb-2">Username or Email</label>
-                    <input type="text" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow" placeholder="Your Username">
-                </div>
+  <body class="bg-grey-lighter h-screen font-sans">
+  <div class="container mx-auto h-full flex justify-center items-center pb-64">
+    <div class="w-1/3">
+      <h1 class="font-hairline mb-6 text-center">Login to our Website</h1>
+      <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
 
-                <div class="mb-4">
-                    <label class="font-bold text-grey-darker block mb-2">Password</label>
-                    <input type="text" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow" placeholder="Your Password">
-                </div>
+        <Formik @onSubmit="submit">
+          <FormGroup v-for="field in fields"
+                     :key="field.name"
+                     :type="field.type"
+                     :name="field.name"
+                     :value="field.value"
+                     :label="field.label"
+          >
+          </FormGroup>
+        </Formik>
 
-                <div class="flex items-center justify-between">
-                    <button class="bg-green-999 hover:bg-teal text-white font-bold py-2 px-4 rounded">
-                        Login
-                    </button>
-
-                    <a class="no-underline inline-block align-baseline font-bold text-sm text-blue hover:text-blue-dark float-right" href="#">
-                        Forgot Password?
-                    </a>
-                </div>
-                
-            </div>
-            <div class="text-center">
-                <p class="text-grey-dark text-sm">Don't have an account? <a href="/register" class="no-underline text-blue font-bold">Create an Account</a>.</p>
-            </div>
-        </div>
+      </div>
+      <div class="text-center">
+        <p class="text-grey-dark text-sm">Don't have an account? <a href="/register" class="no-underline text-blue font-bold">Create an Account</a>.</p>
+      </div>
     </div>
-</body>
+  </div>
+  </body>
 </template>
+
+<script>
+  import Formik from "./Form/Formik";
+  import FormGroup from "./Form/FormGroup";
+  import axios from "axios";
+
+  export default {
+    name: "Login",
+    components: {
+      FormGroup,
+      Formik
+    },
+    data: function () {
+      return {
+        fields: [
+          {
+            label: 'Email',
+            name: 'email',
+            type: 'email',
+          },
+          {
+            label: 'Mot de passe',
+            name: 'password',
+            type: 'password',
+          }
+        ],
+      }
+    },
+    methods: {
+      submit(values){
+        fetch("http://localhost:4000/login", {
+          "method": "POST",
+          "headers": {
+            "content-type": "application/json"
+          },
+          "body": JSON.stringify(values)
+        })
+          .then(res => res.json())
+          .then(data => console.log(data))
+          .catch(err => {
+            // console.log(err);
+          });
+      }
+    }
+  }
+</script>
