@@ -1,10 +1,15 @@
 <template>
 
     <body class="bg-grey-lighter h-screen font-sans">
+        <div class="flex float-right justify-between">
+            <button class="bg-red-600 hover:bg-teal text-white font-bold py-2 px-4 rounded">
+                Delete user
+            </button>
+        </div>
         <div class="container mx-auto h-full flex justify-center items-center pb-20">
             <div class="w-1/3">
-                <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-16">Register to our website
-                </h1>
+                          <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Edit your profile</h1>
+                          
                 <div
                     class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
                     <div class="mb-4">
@@ -28,10 +33,6 @@
                             placeholder="Your Email">
                     </div>
 
-                    <div class="mb-4">
-                        <label class="font-bold text-grey-darker block mb-2">Birthdate</label>
-                        <input type="date" class="bg-gray-300 p-2" v-model="localValue" @change="onChange">
-                    </div>
 
                     <div class="mb-4">
                         <label class="font-bold text-grey-darker block mb-2">Password</label>
@@ -42,36 +43,15 @@
 
                     <div class="flex items-center justify-between">
                         <button class="bg-green-999 hover:bg-teal text-white font-bold py-2 px-4 rounded">
-                            Register
+                            Update
                         </button>
+
+
                     </div>
 
                 </div>
-                <div class="text-center">
-                    <p class="text-gray-600 text-sm">Already have an account ? <a href="/login"
-                            class="no-underline text-blue-500 font-bold">Please log in</a>.</p>
-                </div>
+
             </div>
         </div>
     </body>
 </template>
-
-<script>
-    export default {
-
-        name: "InputDate",
-        props: {
-            value: String
-        },
-        data() {
-            return {
-                localValue: this.value
-            }
-        },
-        methods: {
-            onChange(e) {
-                this.$emit('update:value', e.target.value)
-            }
-        }
-    }
-</script>
