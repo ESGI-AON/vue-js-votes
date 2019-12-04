@@ -5,7 +5,7 @@
       <h1 class="font-hairline mb-6 text-center">Login to our Website</h1>
       <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
 
-        <Formik @onSubmit="submit">
+        <Formik @onSubmit="login">
           <FormGroup v-for="field in fields"
                      :key="field.name"
                      :type="field.type"
@@ -28,7 +28,7 @@
 <script>
   import Formik from "./Form/Formik";
   import FormGroup from "./Form/FormGroup";
-  import axios from "axios";
+  import { mapActions } from "vuex";
 
   export default {
     name: "Login",
@@ -53,20 +53,7 @@
       }
     },
     methods: {
-      submit(values){
-        fetch("http://localhost:4000/login", {
-          "method": "POST",
-          "headers": {
-            "content-type": "application/json"
-          },
-          "body": JSON.stringify(values)
-        })
-          .then(res => res.json())
-          .then(data => console.log(data))
-          .catch(err => {
-            // console.log(err);
-          });
-      }
+      ...mapActions(['login', 'createVote'])
     }
   }
 </script>
