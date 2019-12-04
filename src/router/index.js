@@ -26,6 +26,24 @@ const routes = [{
         name: 'vote',
         component: () =>
             import ('../components/Vote.vue')
+    },
+    {
+        path: '/user-profile',
+        name: 'userprofile',
+        component: () =>
+            import ('../components/UserProfile.vue')
+    },
+    {
+        path: '/edit-vote',
+        name: 'editvote',
+        component: () =>
+            import ('../components/EditVote.vue')
+    },
+    {
+        path: '/list-vote',
+        name: 'listvote',
+        component: () =>
+            import ('../components/ListVote.vue')
     }
 ]
 

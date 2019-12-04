@@ -2,7 +2,7 @@
 <body class="bg-grey-lighter h-screen font-sans">
     <div class="container mx-auto h-full flex justify-center items-center pb-24">
         <div class="w-1/3">
-            <h1 class="font-hairline mb-6 text-center">Create voting proposal</h1>
+                          <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Create voting proposal</h1>
             <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
                 <div class="mb-4">
                     <label class="font-bold text-grey-darker block mb-2">Title</label>
