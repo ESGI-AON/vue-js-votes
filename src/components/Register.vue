@@ -1,5 +1,5 @@
 <template>
-  <Formik @onSubmit="submit">
+  <Formik @onSubmit="register">
     <FormGroup v-for="field in fields"
                :key="field.name"
                :type="field.type"
@@ -15,6 +15,8 @@
 
   import Formik from "./Form/Formik";
   import FormGroup from "./Form/FormGroup";
+  import {api} from "../utils";
+  import {mapMutations} from "vuex";
 
   export default {
     name: "Register",
@@ -27,50 +29,41 @@
         fields: [
           {
             type: 'text',
-            name: 'firstname',
+            name: 'first_name',
             label: 'Prénom',
-            value: ''
           },
           {
             type: 'text',
-            name: 'lastname',
+            name: 'last_name',
             label: 'Nom',
-            value: ''
           },
           {
             type: 'email',
             name: 'email',
             label: 'Email',
-            value: ''
           },
           {
             type: 'password',
-            name: 'password',
+            name: 'pass',
             label: 'Mot de passe',
-            value: ''
           },
           {
             type: 'date',
             name: 'birth_date',
             label: 'Date de naissance',
-            value: ''
           },
         ]
       }
     },
     methods: {
-      submit: function (values) {
-        fetch('http://localhost:8000/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: values
-        })
-          .then(res => res.json())
-          .then(data => console.log(data)
-        );
-        alert (JSON.stringify(values, null, 2));
+      ...mapMutations(['setUser']),
+      register: function (body) {
+        const [year, month, day] = body['birth_date'].split('-');
+        body['birth_date'] = `${day}-${month}-${year}`;
+        api('/users', body, 'POST')
+          .then(user => {
+            this.setUser(user)
+          })
       }
     }
   }

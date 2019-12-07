@@ -1,9 +1,10 @@
-export const api = (url, body, bearer = null, method = 'POST') => {
+export const api = (url, body, method) => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  if (bearer) {
-    headers.bearer = bearer
+  const jwt = localStorage.getItem('jwt');
+  if (jwt) {
+    headers.authorization = `Bearer ${jwt}`
   }
   return fetch(`http://localhost:4000${url}`, {
     method: method,

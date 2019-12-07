@@ -5,7 +5,6 @@
       <div class="w-1/3">
         <h1 class="font-hairline mb-6 text-center">Login to our Website</h1>
         <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
-
           <Formik @onSubmit="login">
             <FormGroup v-for="field in fields"
                        :key="field.name"
@@ -29,7 +28,8 @@
 <script>
   import Formik from "./Form/Formik";
   import FormGroup from "./Form/FormGroup";
-  import { mapActions } from "vuex";
+  import {mapActions, mapMutations} from "vuex";
+  import {api} from "../utils";
 
   export default {
     name: "Login",
@@ -54,7 +54,20 @@
       }
     },
     methods: {
-      ...mapActions(['login', 'createVote'])
+      ...mapMutations(['setUser']),
+      login: function (body) {
+        api('/login', body, 'POST')
+          .then(({jwt}) => {
+            localStorage.setItem('jwt', jwt)
+          })
+          .then(() => {
+            api(`/user/${body.email}`)
+              .then((user) => {
+                this.setUser(user);
+                this.$router.push('/')
+              })
+          })
+      }
     }
   }
 </script>

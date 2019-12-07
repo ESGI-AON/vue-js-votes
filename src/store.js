@@ -1,24 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
-import { api } from './utils'
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    jwt: localStorage.getItem('jwt')
+    user: {},
   },
   getters: {
+    isAuthenticated: ({user}) => Object.entries(user).length > 0,
+    isAdmin: ({user}, {isAuthenticated}) => isAuthenticated && user["access_level"] === 1,
+    userPermission: (state, {isAdmin, isAuthenticated}) => {
+      if (isAdmin) return 2;
+      if (isAuthenticated) return 1;
+      return 0;
+    }
   },
   mutations: {
-    setJwt: function (state, jwt) {
-      localStorage.setItem('jwt', jwt)
+    setUser: function (state, user) {
+      state.user = user
     }
   },
   actions: {
-    login: function ({commit}, body) {
-      api('/login', body)
-        .then(data => commit('setJwt', data.jwt))
-    }
+
   }
 });

@@ -13,60 +13,78 @@
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="float-left mr-4 my-2 ">
           <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white  "
-            v-for="routes in links" v-bind:key="routes.id" :to="`${routes.page}`">{{routes.text}}
+            v-for="routes in linksFiltered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
           </router-link>
         </div>
       </div>
 
       <div class="float-right ml-64 my-2 ">
         <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white  "
-          v-for="routes in links2" v-bind:key="routes.id" :to="`${routes.page}`">{{routes.text}}
+          v-for="routes in links2Filtered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
         </router-link>
       </div>
-
+      <div v-if="user.first_name">Welcome {{ user.first_name }} {{ user.last_name }}</div>
     </nav>
   </div>
 </template>
 
 <script>
+  import {mapGetters, mapState} from "vuex";
+
   export default {
     name: 'Navbar',
     data() {
       return {
-        links: [{
+        links: [
+          {
             id: 0,
             text: 'Home',
-            page: '/'
+            page: '/',
+            permission: 0
           },
           {
             id: 1,
             text: 'Vote',
-            page: '/Vote'
+            page: '/vote',
+            permission: 2
           },
           {
             id: 2,
             text: 'Login',
-            page: '/Login'
+            page: '/login',
+            permission: 0
           },
         ],
-        
-        links2: [{
+        links2: [
+          {
             id: 0,
             text: 'EditVote',
-            page: '/edit-vote'
+            page: '/edit-vote',
+            permission: 2
           },
           {
             id: 1,
             text: 'ListVote',
-            page: '/list-vote'
+            page: '/list-vote',
+            permission: 1
           },
           {
             id: 2,
             text: 'UserProfile',
-            page: '/user-profile'
+            page: '/user-profile',
+            permission: 2
           },
         ],
-
+      }
+    },
+    computed: {
+      ...mapState(['user']),
+      ...mapGetters(['userPermission']),
+      linksFiltered: function () {
+        return this.links.filter(l => l.permission <= this.userPermission)
+      },
+      links2Filtered: function () {
+        return this.links2.filter(l => l.permission <= this.userPermission)
       }
     }
   }
