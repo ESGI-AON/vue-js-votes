@@ -69,7 +69,7 @@ const routes = [
     path: '/list-vote',
     name: 'listvote',
     component: () => import ('../components/ListVote.vue'),
-    beforeEnter: multiguard([isAuthenticated, isAdmin])
+    beforeEnter: multiguard([isAuthenticated])
   }
 ];
 
