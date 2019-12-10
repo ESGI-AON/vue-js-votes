@@ -1,4 +1,9 @@
 <template>
+  <div class="bg-grey-lighter h-screen font-sans">
+    <div class="container mx-auto h-full flex justify-center items-center pt-0">
+      <div class="w-1/3">
+        <h1 class="font-hairline mb-6 text-center">Register to our Website</h1>
+        <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
   <Formik @onSubmit="register">
     <FormGroup v-for="field in fields"
                :key="field.name"
@@ -9,15 +14,19 @@
     >
     </FormGroup>
   </Formik>
+ </div>
+       <div class="text-center">
+          <p class="text-grey-dark text-sm">Already have an account? <a href="/login" class="no-underline text-blue font-bold">Log into your account</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
 <script>
-
   import Formik from "./Form/Formik";
   import FormGroup from "./Form/FormGroup";
   import {api} from "../utils";
   import {mapMutations} from "vuex";
-
   export default {
     name: "Register",
     components: {
