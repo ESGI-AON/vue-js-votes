@@ -1,57 +1,84 @@
 <template>
-
-    <body class="bg-grey-lighter h-screen font-sans">
-        <div class="flex float-right justify-between">
-            <button class="bg-red-600 hover:bg-teal text-white font-bold py-2 px-4 rounded">
-                Delete user
-            </button>
-        </div>
-        <div class="container mx-auto h-full flex justify-center items-center pb-20">
-            <div class="w-1/3">
-                          <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Edit your profile</h1>
-                          
-                <div
-                    class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
-                    <div class="mb-4">
-                        <label class="font-bold text-grey-darker block mb-2">First name</label>
-                        <input type="text"
-                            class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow"
-                            placeholder="Your First name">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="font-bold text-grey-darker block mb-2">Last name</label>
-                        <input type="text"
-                            class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow"
-                            placeholder="Your Last name">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="font-bold text-grey-darker block mb-2">Email</label>
-                        <input type="text"
-                            class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow"
-                            placeholder="Your Email">
-                    </div>
-
-
-                    <div class="mb-4">
-                        <label class="font-bold text-grey-darker block mb-2">Password</label>
-                        <input type="text"
-                            class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow"
-                            placeholder="Your Password">
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <button class="bg-green-999 hover:bg-teal text-white font-bold py-2 px-4 rounded">
-                            Update
-                        </button>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </body>
+  <Formik @onSubmit="editUser" :initial-values="initialValues">
+    <FlashMessage v-if="isSuccessful" :message="message" class="success"/>
+    <FormGroup
+      v-for="(value, name) in fields"
+      :key="name"
+      :name="name"
+      :value="value.value"
+      :label="value.label"
+      :type="value.type"
+    >
+    </FormGroup>
+  </Formik>
 </template>
+
+<script>
+    import Formik from "./Form/Formik";
+    import FormGroup from "./Form/FormGroup";
+    import FlashMessage from "./UI/FlashMessage";
+    import {api} from "../utils";
+    import {mapMutations, mapState} from "vuex";
+
+    export default {
+      name: 'UserProfile',
+      components: {
+        Formik,
+        FormGroup,
+        FlashMessage
+      },
+      data() {
+        return {
+          fields: {
+            "first_name": {
+              label: "Firstname",
+              type: "text",
+              value: ""
+            },
+            "last_name": {
+              label: "Lastname",
+              type: "text",
+              value: ""
+            },
+            "email": {
+              label: "Email",
+              type: "email",
+              value: ""
+            }
+          },
+          initialValues: {},
+          isSuccessful: false,
+          message: "You successfuly edit your personnal infos"
+        }
+      },
+      computed: {
+        ...mapState(['user'])
+      },
+      mounted() {
+        this.getUser()
+      },
+      methods: {
+        ...mapMutations(['setUser']),
+        getUser() {
+          api(`/users/${this.user.uuid}`,null, 'GET')
+          .then(user => {
+            for (let key in user) {
+              if (this.fields[key]) {
+                this.fields[key]['value'] = user[key]
+                this.initialValues[key] = user[key]
+              }
+            }
+          })
+        },
+        editUser(body) {
+          // TODO update store
+          api(`/users/${this.user.uuid}`, body, 'PUT')
+          .then((updatedUser) => {
+            this.isSuccessful = true;
+            this.setUser({...this.user, ...updatedUser})
+          })
+        }
+      }
+
+    }
+</script>
