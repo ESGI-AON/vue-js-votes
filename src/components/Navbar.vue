@@ -15,6 +15,12 @@
           <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
             v-for="routes in linksFiltered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
           </router-link>
+          <button v-if="userPermission > 0"
+                  @click="logout"
+                  class="hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
+          >
+            Logout
+          </button>
         </div>
       </div>
 
@@ -37,7 +43,7 @@
 
 <script>
   import {
-    mapGetters,
+    mapGetters, mapMutations,
     mapState
   } from "vuex";
 
@@ -78,6 +84,14 @@
             permission: 2
           },
         ],
+      }
+    },
+    methods: {
+      ...mapMutations(['setUser']),
+      logout(){
+        localStorage.removeItem('jwt')
+        this.setUser({})
+        this.$router.push('/')
       }
     },
     computed: {
