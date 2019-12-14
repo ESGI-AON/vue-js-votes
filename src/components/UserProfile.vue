@@ -62,12 +62,12 @@
         getUser() {
           api(`/users/${this.user.uuid}`,null, 'GET')
           .then(user => {
-            for (let key in user) {
+            Object.entries(user).forEach(([key, value]) => {
               if (this.fields[key]) {
-                this.fields[key]['value'] = user[key]
-                this.initialValues[key] = user[key]
+                this.fields[key]["value"] = value
+                this.initialValues[key] = value
               }
-            }
+            });
           })
         },
         editUser(body) {
