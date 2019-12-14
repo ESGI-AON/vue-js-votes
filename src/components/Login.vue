@@ -28,7 +28,7 @@
 <script>
   import Formik from "./Form/Formik";
   import FormGroup from "./Form/FormGroup";
-  import {mapActions, mapMutations} from "vuex";
+  import {mapMutations} from "vuex";
   import {api} from "../utils";
 
   export default {
