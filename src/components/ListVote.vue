@@ -25,10 +25,11 @@
             <td class="py-4 px-6 border-b border-gray-100">{{ vote.desc }}</td>
 
             <td class="py-4 px-6 border-b border-gray-100">
-              <a href="#"
-                class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 ">
+              <button v-if="!isAdmin"
+                      @click="putVote(vote.uuid)"
+                      class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 ">
                 Vote
-              </a>
+              </button>
               <router-link
                       :to="{name: 'editvote', params: {'uuid': vote.uuid}}"
                       class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 mx-2"
@@ -63,6 +64,9 @@
       getVotes(){
         api('/votes', null, 'GET')
         .then(votes => this.votes = votes)
+      },
+      putVote(uuid){
+        api(`/votes/${uuid}`, {"start_date": "01-01-2019","end_date": "02-01-2019"}, 'PUT')
       }
     }
   }
