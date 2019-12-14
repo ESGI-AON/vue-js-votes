@@ -64,12 +64,7 @@
             permission: 0
           },
         ],
-        links2: [{
-            id: 0,
-            text: 'EditVote',
-            page: '/edit-vote',
-            permission: 2
-          },
+        links2: [
           {
             id: 1,
             text: 'ListVote',
