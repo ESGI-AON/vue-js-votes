@@ -62,7 +62,7 @@ const routes = [{
         beforeEnter: multiguard([isAuthenticated])
     },
     {
-        path: '/edit-vote',
+        path: '/edit-vote/:uuid',
         name: 'editvote',
         component: () =>
             import ('../components/EditVote.vue'),
