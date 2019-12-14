@@ -46,12 +46,8 @@
 <script>
   import {api} from '../utils'
   import {mapGetters} from "vuex";
-  import ActionButton from "./UI/ActionButton";
   export default {
     name: 'ListVote',
-    components: {
-      ActionButton
-    },
     data(){
       return {
         votes: []

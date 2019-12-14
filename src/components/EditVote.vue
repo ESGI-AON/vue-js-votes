@@ -43,7 +43,7 @@
         },
         initialValues: {},
         isSuccessful: false,
-        message: "You successfuly edit the vote"
+        message: "Edition successful"
       }
     },
     mounted() {

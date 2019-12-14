@@ -48,7 +48,7 @@
           },
           initialValues: {},
           isSuccessful: false,
-          message: "You successfuly edit your personnal infos"
+          message: "Edition successful"
         }
       },
       computed: {
