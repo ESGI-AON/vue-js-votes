@@ -2,7 +2,7 @@
 <body class="bg-grey-lighter h-screen font-sans">
     <div class="container mx-auto h-full flex justify-center items-center pb-24">
         <div class="w-1/3">
-            <h1 class="font-hairline mb-6 text-center">Create voting proposal</h1>
+                          <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Create voting proposal</h1>
             <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
 
                     <Formik @onSubmit="submit">
@@ -57,7 +57,7 @@
                 fetch("http://localhost:4000/votes", {
                     "method": "Post",
                     "headers": {
-                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfbGV2ZWwiOjEsImV4cCI6MTU3NTgxOTczNSwib3JpZ19pYXQiOjE1NzU4MTYxMzUsInV1aWQiOiJjODMxYWRjYy0yNjUzLTRiYWQtOWZjZi1kMDUxODEwMmMwYTkifQ.zWK0pSwZRBpW1edTqKljNbzKch8n2t3DY5jGJYJ96KU",
+                        "Authorization": "Bearer "+ localStorage.jwt,
                         "content-type": "application/json"
                     },
                     "body": JSON.stringify(values)
