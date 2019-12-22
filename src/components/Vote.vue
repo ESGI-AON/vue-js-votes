@@ -4,24 +4,19 @@
         <div class="w-1/3">
                           <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Create voting proposal</h1>
             <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
-                <div class="mb-4">
-                    <label class="font-bold text-grey-darker block mb-2">Title</label>
-                    <input type="text" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow" placeholder="Title">
-                </div>
 
-                <div class="mb-4">
-                    <label class="font-bold text-grey-darker block mb-2">Description</label>
-                    <textarea type="text" class="block appearance-none w-full h-64 bg-white border border-grey-light hover:border-grey px-2 py-2 rounded shadow" placeholder="Description">
-               </textarea>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <button class="bg-green-999 hover:bg-teal text-white font-bold py-2 px-4 rounded">
-                        Submit
-                    </button>
-
+                    <Formik @onSubmit="addVote">
+                        <FormGroup v-for="field in fields"
+                                   :key="field.name"
+                                   :type="field.type"
+                                   :name="field.name"
+                                   :value="field.value"
+                                   :label="field.label"
+                        >
+                        </FormGroup>
+                    </Formik>
                   
-                </div>
+
                 
             </div>
            
@@ -29,3 +24,41 @@
     </div>
 </body>
 </template>
+
+<script>
+    import Formik from "./Form/Formik";
+    import FormGroup from "./Form/FormGroup";
+    import axios from "axios";
+    import {api} from "../utils";
+
+    export default {
+        name: "Votes",
+        components: {
+            FormGroup,
+            Formik
+        },
+        data: function () {
+            return {
+                fields: [
+                    {
+                        label: 'Title',
+                        name: 'title',
+                        type: 'text',
+                    },
+                    {
+                        label: 'Description',
+                        name: 'desc',
+                        type: 'textarea',
+                    }
+                ],
+            }
+        },
+        methods: {
+            addVote(values){
+                api("/votes",values,"POST")
+                    .then(() => { this.$router.push('/list-vote')
+                    })
+            }
+        }
+    }
+</script>
