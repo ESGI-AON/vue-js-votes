@@ -11,32 +11,47 @@
         </button>
       </div>
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="float-left mr-4 my-2 ">
-          <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white  "
+        <div class="float-left mr-4 my-2">
+          <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
             v-for="routes in linksFiltered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
           </router-link>
+          <button v-if="userPermission > 0"
+                  @click="logout"
+                  class="hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
+          >
+            Logout
+          </button>
         </div>
       </div>
 
       <div class="float-right ml-64 my-2 ">
-        <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white  "
+        <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
           v-for="routes in links2Filtered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
         </router-link>
+
       </div>
-      <div v-if="user.first_name">Welcome {{ user.first_name }} {{ user.last_name }}</div>
+      <router-link to="/user-profile">
+        <div
+          class="hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white rounded-full py-2 px-4 border border-black"
+          v-if="user.first_name">
+          Welcome {{ user.first_name }} {{ user.last_name }}
+        </div>
+      </router-link>
     </nav>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapState} from "vuex";
+  import {
+    mapGetters, mapMutations,
+    mapState
+  } from "vuex";
 
   export default {
     name: 'Navbar',
     data() {
       return {
-        links: [
-          {
+        links: [{
             id: 0,
             text: 'Home',
             page: '/',
@@ -57,12 +72,6 @@
         ],
         links2: [
           {
-            id: 0,
-            text: 'EditVote',
-            page: '/edit-vote',
-            permission: 2
-          },
-          {
             id: 1,
             text: 'ListVote',
             page: '/list-vote',
@@ -75,6 +84,14 @@
             permission: 2
           },
         ],
+      }
+    },
+    methods: {
+      ...mapMutations(['setUser']),
+      logout(){
+        localStorage.removeItem('jwt')
+        this.setUser({})
+        this.$router.push('/')
       }
     },
     computed: {

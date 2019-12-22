@@ -11,7 +11,7 @@
     name: "Formik",
     data: function() {
       return {
-        values: { ...this.initialValues }
+        values: this.initialValues || {}
       }
     },
     props: ['initialValues'],

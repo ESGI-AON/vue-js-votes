@@ -19,34 +19,55 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="hover:bg-gray-100">
-            <td class="py-4 px-6 border-b border-gray-100">MyVote1</td>
-            <td class="py-4 px-6 border-b border-gray-100">It's my first vote</td>
+
+          <tr class="hover:bg-gray-100" v-for="vote in votes">
+            <td class="py-4 px-6 border-b border-gray-100">{{ vote.title }}</td>
+            <td class="py-4 px-6 border-b border-gray-100">{{ vote.desc }}</td>
 
             <td class="py-4 px-6 border-b border-gray-100">
-              <a href="#"
-                class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 ">Vote</a>          
+              <button v-if="!isAdmin"
+                      @click="putVote(vote.uuid)"
+                      class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 ">
+                Vote
+              </button>
+              <router-link
+                      :to="{name: 'editvote', params: {'uuid': vote.uuid}}"
+                      class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 mx-2"
+              >
+                Edit
+              </router-link>
             </td>
           </tr>
-          <tr class="hover:bg-gray-100">
-            <td class="py-4 px-6 border-b border-gray-100">MyVote2</td>
-            <td class="py-4 px-6 border-b border-gray-100">It's my first vote</td>
-            <td class="py-4 px-6 border-b border-gray-100">
-              <a href="#"
-                class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400">Vote</a>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-100">
-            <td class="py-4 px-6 border-b border-gray-100">MyVote3</td>
-            <td class="py-4 px-6 border-b border-gray-100">It's my first vote</td>
-            <td class="py-4 px-6 border-b border-gray-100">
-              <a href="#"
-                class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400">Vote</a>
-            </td>
-          </tr>
-          
         </tbody>
       </table>
     </div>
   </div>
 </template>
+
+<script>
+  import {api} from '../utils'
+  import {mapGetters} from "vuex";
+  export default {
+    name: 'ListVote',
+    data(){
+      return {
+        votes: []
+      }
+    },
+    computed: {
+      ...mapGetters(['isAdmin'])
+    },
+    mounted(){
+      this.getVotes()
+    },
+    methods: {
+      getVotes(){
+        api('/votes', null, 'GET')
+        .then(votes => this.votes = votes)
+      },
+      putVote(uuid){
+        api(`/votes/${uuid}`, {"start_date": "01-01-2019","end_date": "02-01-2019"}, 'PUT')
+      }
+    }
+  }
+</script>
