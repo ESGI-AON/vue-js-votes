@@ -5,7 +5,7 @@
                           <h1 class="font-hairline mb-6 text-center uppercase font-bold text-2xl pt-2">Create voting proposal</h1>
             <div class=" border-t-2 border-green-999 border-teal p-8 border-t-12 bg-white mb-6 rounded-lg shadow-lg">
 
-                    <Formik @onSubmit="submit">
+                    <Formik @onSubmit="addVote">
                         <FormGroup v-for="field in fields"
                                    :key="field.name"
                                    :type="field.type"
@@ -29,6 +29,7 @@
     import Formik from "./Form/Formik";
     import FormGroup from "./Form/FormGroup";
     import axios from "axios";
+    import {api} from "../utils";
 
     export default {
         name: "Votes",
@@ -53,20 +54,10 @@
             }
         },
         methods: {
-            submit(values){
-                fetch("http://localhost:4000/votes", {
-                    "method": "Post",
-                    "headers": {
-                        "Authorization": "Bearer "+ localStorage.jwt,
-                        "content-type": "application/json"
-                    },
-                    "body": JSON.stringify(values)
-                })
-                    .then(res => res.json())
-                    .then(data => console.log(data))
-                    .catch(err => {
-                        // console.log(err);
-                    });
+            addVote(values){
+                api("/votes",values,"POST")
+                    .then(() => { this.$router.push('/list-vote')
+                    })
             }
         }
     }
