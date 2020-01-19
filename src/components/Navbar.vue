@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="flex items-center justify-between flex-wrap border-b-2 border-green-999 p-6">
+    <nav class="flex items-center flex-wrap border-b-2 border-green-999 p-6">
       <div class="flex items-center flex-shrink-0 text-white mr-6">
         <img class="fill-current h-10 w-16 mr-2" src="../assets/vote.svg">
         <span class="font-semibold text-xl tracking-tight">Votes</span>
@@ -10,7 +10,7 @@
           class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
         </button>
       </div>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="block ">
         <div class="float-left mr-4 my-2">
           <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
             v-for="(property, name) in linksFiltered" v-bind:key="name" :to="property.path">{{ name }}
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="float-right ml-64 my-2 ">
+      <div class="my-2 ml-auto">
         <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
           v-for="(property, name) in links2Filtered" v-bind:key="name" :to="property.path">{{ name }}
         </router-link>
@@ -58,6 +58,10 @@
           },
           Vote: {
             path: '/vote',
+            permission: 2
+          },
+          Register: {
+            path: '/register',
             permission: 2
           },
           Login: {

@@ -71,7 +71,8 @@
         body['birth_date'] = `${day}-${month}-${year}`;
         api('/users', body, 'POST')
           .then(user => {
-            this.setUser(user)
+            this.setUser(user);
+            this.$router.push('/login')
           })
       }
     }
