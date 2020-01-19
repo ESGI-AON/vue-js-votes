@@ -48,7 +48,7 @@
           },
           initialValues: {},
           isSuccessful: false,
-          message: "Edition successful"
+          message: "Edit successful"
         }
       },
       computed: {
@@ -60,7 +60,7 @@
       methods: {
         ...mapMutations(['setUser']),
         getUser() {
-          api(`/users/${this.user.uuid}`,null, 'GET')
+          api(`/users/${this.$route.params.uuid}`,null, 'GET')
           .then(user => {
             Object.entries(user).forEach(([key, value]) => {
               if (this.fields[key]) {
@@ -71,11 +71,12 @@
           })
         },
         editUser(body) {
-          // TODO update store
-          api(`/users/${this.user.uuid}`, body, 'PUT')
+          api(`/users/${this.$route.params.uuid}`, body, 'PUT')
           .then((updatedUser) => {
             this.isSuccessful = true;
-            this.setUser({...this.user, ...updatedUser})
+            if (this.user.uuid === updatedUser.uuid) {
+              this.setUser({...this.user, ...updatedUser})
+            }
           })
         }
       }

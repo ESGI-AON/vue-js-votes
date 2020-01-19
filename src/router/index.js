@@ -55,7 +55,7 @@ const routes = [{
         beforeEnter: multiguard([isAuthenticated, isAdmin])
     },
     {
-        path: '/user-profile',
+        path: '/user-profile/:uuid',
         name: 'userprofile',
         component: () =>
             import ('../components/UserProfile.vue'),
@@ -74,6 +74,13 @@ const routes = [{
         component: () =>
             import ('../components/ListVote.vue'),
         beforeEnter: multiguard([isAuthenticated])
+    },
+    {
+        path: '/list-users',
+        name: 'listusers',
+        component: () => import('../components/ListUsers.vue'),
+        beforeEnter: multiguard([isAdmin])
+
     }
 ];
 
