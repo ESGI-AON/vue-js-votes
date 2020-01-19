@@ -13,7 +13,7 @@
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
         <div class="float-left mr-4 my-2">
           <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
-            v-for="routes in linksFiltered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
+            v-for="(property, name) in linksFiltered" v-bind:key="name" :to="property.path">{{ name }}
           </router-link>
           <button v-if="userPermission > 0"
                   @click="logout"
@@ -26,7 +26,7 @@
 
       <div class="float-right ml-64 my-2 ">
         <router-link class=" hover:bg-green-999 lg:inline-block lg:mt-0  text-black mr-4 px-4 rounded-full bg-white"
-          v-for="routes in links2Filtered" v-bind:key="routes.id" :to="routes.page">{{routes.text}}
+          v-for="(property, name) in links2Filtered" v-bind:key="name" :to="property.path">{{ name }}
         </router-link>
 
       </div>
@@ -51,40 +51,37 @@
     name: 'Navbar',
     data() {
       return {
-        links: [{
-            id: 0,
-            text: 'Home',
-            page: '/',
+        links: {
+          Home: {
+            path: '/',
             permission: 0
           },
-          {
-            id: 1,
-            text: 'Vote',
-            page: '/vote',
+          Vote: {
+            path: '/vote',
             permission: 2
           },
-          {
-            id: 2,
-            text: 'Login',
-            page: '/login',
+          Login: {
+            path: '/login',
             permission: 0
-          },
-        ],
-        links2: [
-          {
-            id: 1,
-            text: 'ListVote',
-            page: '/list-vote',
+          }
+        },
+        links2: {
+          ListVote: {
+            path: '/list-vote',
             permission: 1
           },
-          {
-            id: 2,
-            text: 'UserProfile',
-            page: '/user-profile',
+          ListUsers: {
+            path: '/list-users',
             permission: 2
           },
-        ],
+          UserProfile: {
+            permission: 2,
+          }
+        }
       }
+    },
+    created() {
+      this.links2.UserProfile.path = `/user-profile/${this.user.uuid}`
     },
     methods: {
       ...mapMutations(['setUser']),
@@ -98,10 +95,22 @@
       ...mapState(['user']),
       ...mapGetters(['userPermission']),
       linksFiltered: function () {
-        return this.links.filter(l => l.permission <= this.userPermission)
+        const filtered = {};
+        for (const [name, properties] of Object.entries(this.links)) {
+          if (properties.permission <= this.userPermission) {
+            filtered[name] = properties
+          }
+        }
+        return filtered
       },
       links2Filtered: function () {
-        return this.links2.filter(l => l.permission <= this.userPermission)
+        const filtered = {};
+        for (const [name, properties] of Object.entries(this.links2)) {
+          if (properties.permission <= this.userPermission) {
+            filtered[name] = properties
+          }
+        }
+        return filtered
       }
     }
   }
