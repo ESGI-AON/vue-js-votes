@@ -22,11 +22,15 @@
             <td class="py-4 px-6 border-b border-gray-100">
               <router-link
                       :to="{name: 'userprofile', params: {'uuid': user.uuid}}"
-                      class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-999 hover:bg-green-400 mx-2"
+                      class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-green-500 hover:bg-green-400 mx-2"
               >
                 Edit
               </router-link>
-              <button>Delete</button>
+              <button class="text-gray-100 font-bold py-1 px-3 rounded text-xs bg-red-500 hover:bg-red-400 mx-2"
+                @click="deleteUser(user.uuid)"
+              >
+                Delete
+              </button>
             </td>
           </tr>
         </tbody>
@@ -56,6 +60,10 @@
       getUsers(){
         api('/users', null, 'GET')
           .then(users => this.users = users)
+      },
+      deleteUser(uuid){
+        api(`/users/${uuid}`, null, 'DELETE')
+          .then(data => this.getUsers())
       }
     }
   }
